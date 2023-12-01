@@ -19,13 +19,6 @@ jobs:
     - name: Create android SDK folder
       run: mkdir -p ${{github.workspace}}/Android/Sdk
 
-    - name: Check java version
-      run: |
-        ls -l /usr/lib/jvm/
-        sudo update-alternatives --set java /usr/lib/jvm/temurin-17-jdk-amd64/bin/java
-        java --version
-        sudo update-alternatives --config java
-
     - name: Download SDK cmdline-tools
       working-directory: ${{github.workspace}}/Android/Sdk
       run: wget -q -O tmp.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip && unzip tmp.zip && rm tmp.zip        
@@ -33,6 +26,8 @@ jobs:
     - name: Install SDK
       working-directory: ${{github.workspace}}/Android/Sdk
       run: |      
+        sudo update-alternatives --set java /usr/lib/jvm/temurin-21-jdk-amd64/bin/java
+        java --version
         yes | ./cmdline-tools/bin/sdkmanager \
           --sdk_root=. \
           --install \
