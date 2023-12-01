@@ -17,12 +17,16 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Download SDK
-    - run: |
-        RUN yes | /usr/local/androidsdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=${{github.workspace}}/Android \
+      working-directory: ${{github.workspace}}/Android/Sdk
+      run: |
+        wget -q -O tmp.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip && unzip tmp.zip && rm tmp.zip        
+        yes | ./cmdline-tools/bin/sdkmanager \
+          --sdk_root=. \
           --install \
           "platforms;android-34" \
-          "build-tools;33.0.1"
-
+          "build-tools;33.0.1" \
+          "ndk;22.1.7171670"
+          
     - name: Configure CMake
       run: |
         cmake \ 
