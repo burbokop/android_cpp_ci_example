@@ -1,0 +1,48 @@
+name: CMake on a single platform
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Download SDK
+    - run: |
+        RUN yes | /usr/local/androidsdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=${{github.workspace}}/Android \
+          --install \
+          "platforms;android-34" \
+          "build-tools;33.0.1"
+
+    - name: Configure CMake
+      run: |
+        cmake \ 
+          -B ${{github.workspace}}/build \
+          -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+          -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/Android/Sdk/ndk/22.1.7171670/build/cmake/android.toolchain.cmake
+          -DANDROID_ABI=armeabi-v7a
+          -DANDROID_NDK=${{github.workspace}}/Android/Sdk/ndk/22.1.7171670
+          -DANDROID_PLATFORM=android-23
+          -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a
+          -DCMAKE_ANDROID_NDK=${{github.workspace}}/Android/Sdk/ndk/22.1.7171670
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          -DCMAKE_MAKE_PROGRAM=${{github.workspace}}/Android/Sdk/cmake/3.10.2.4988404/bin/ninja
+          -DCMAKE_SYSTEM_NAME=Android
+          -DCMAKE_SYSTEM_VERSION=23
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C ${{env.BUILD_TYPE}}
+
