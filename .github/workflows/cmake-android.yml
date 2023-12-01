@@ -22,7 +22,6 @@ jobs:
     - name: Check java version
       run: |
         ls -l /usr/lib/jvm/
-        ls -l /usr/lib/jvm/java-17-openjdk-amd64
         sudo update-alternatives --set java /usr/lib/jvm/temurin-17-jdk-amd64/bin/java
         java --version
         sudo update-alternatives --config java
