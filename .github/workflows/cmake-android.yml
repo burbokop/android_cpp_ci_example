@@ -24,8 +24,9 @@ jobs:
 
     - name: Check java version
       run: |
-        sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/openjdk-17/bin/java 100
         ls -l /usr/lib/jvm/
+        ls -l /usr/lib/jvm/java-17-openjdk-amd64
+        sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 100
         java --version
 
     - name: Download SDK cmdline-tools
