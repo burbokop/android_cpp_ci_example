@@ -16,6 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Create android SDK folder
+      run: mkdir -p ${{github.workspace}}/Android/Sdk
+
     - name: Download SDK
       working-directory: ${{github.workspace}}/Android/Sdk
       run: |
