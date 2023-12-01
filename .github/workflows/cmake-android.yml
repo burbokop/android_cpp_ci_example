@@ -19,10 +19,19 @@ jobs:
     - name: Create android SDK folder
       run: mkdir -p ${{github.workspace}}/Android/Sdk
 
-    - name: Download SDK
+    - name: Install JAVA
+      run: sudo apt install openjdk-17-jdk
+
+    - name: Check java version
+      run: java --version
+
+    - name: Download SDK cmdline-tools
       working-directory: ${{github.workspace}}/Android/Sdk
-      run: |
-        wget -q -O tmp.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip && unzip tmp.zip && rm tmp.zip        
+      run: wget -q -O tmp.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip && unzip tmp.zip && rm tmp.zip        
+
+    - name: Install SDK
+      working-directory: ${{github.workspace}}/Android/Sdk
+      run: |      
         yes | ./cmdline-tools/bin/sdkmanager \
           --sdk_root=. \
           --install \
