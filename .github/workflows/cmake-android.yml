@@ -20,7 +20,7 @@ jobs:
       run: mkdir -p ${{github.workspace}}/Android/Sdk
 
     - name: Install JAVA
-      run: sudo apt install openjdk-17-jdk
+      run: sudo apt-get update && sudo apt install -y openjdk-17-jdk openjdk-17-jre
 
     - name: Check java version
       run: java --version
