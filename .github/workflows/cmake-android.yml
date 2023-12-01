@@ -23,7 +23,9 @@ jobs:
       run: sudo apt-get update && sudo apt install -y openjdk-17-jdk openjdk-17-jre
 
     - name: Check java version
-      run: java --version
+      run: |
+        ls -l /usr/lib/jvm/
+        java --version
 
     - name: Download SDK cmdline-tools
       working-directory: ${{github.workspace}}/Android/Sdk
