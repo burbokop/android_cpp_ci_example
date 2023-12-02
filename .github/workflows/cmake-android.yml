@@ -9,6 +9,7 @@ on:
 env:
   BUILD_TYPE: Release
   NDK_VERSION: 25.1.8937393
+  API_VERSION: 23
 
 jobs:
   build:
@@ -48,12 +49,12 @@ jobs:
         -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/Android/Sdk/ndk/${{env.NDK_VERSION}}/build/cmake/android.toolchain.cmake
         -DANDROID_ABI=armeabi-v7a
         -DANDROID_NDK=${{github.workspace}}/Android/Sdk/ndk/${{env.NDK_VERSION}}
-        -DANDROID_PLATFORM=android-34
+        -DANDROID_PLATFORM=android-${{env.API_VERSION}}
         -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a
         -DCMAKE_ANDROID_NDK=${{github.workspace}}/Android/Sdk/ndk/${{env.NDK_VERSION}}
         -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         -DCMAKE_SYSTEM_NAME=Android
-        -DCMAKE_SYSTEM_VERSION=34
+        -DCMAKE_SYSTEM_VERSION=${{env.API_VERSION}}
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
